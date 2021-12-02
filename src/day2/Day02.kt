@@ -42,6 +42,3 @@ fun mapInput(input: List<String>): List<Pair<Int, Int>> {
             }
         }
 }
-
-
-fun List<Int>.getIncreases() = this.zipWithNext().sumOf { if (it.first < it.second) 1.toInt() else 0 }
