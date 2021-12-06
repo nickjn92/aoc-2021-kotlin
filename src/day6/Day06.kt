@@ -1,23 +1,34 @@
 package day6
 
+import java.util.Collections
 import readInput
 
 fun main() {
 
-    fun part1(input: List<String>): Int {
-        return 0
-    }
+    fun simulatePopulationGrowth(input: List<String>, days: Int): Long {
+        val reproducingIn = longArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-    fun part2(input: List<String>): Int {
-        return 0
+        input.map { it.split(',') }
+            .flatten()
+            .forEach { reproducingIn[it.toInt()]++ }
+
+        repeat(days) {
+            val currentValues = reproducingIn.toMutableList()
+            Collections.rotate(currentValues, -1)
+            currentValues.forEachIndexed { idx, value -> reproducingIn[idx] = value }
+            reproducingIn[6] += currentValues[8]
+        }
+
+        return reproducingIn.sum()
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("day6/test")
-    check(part1(testInput) == 0)
-    check(part2(testInput) == 0)
+
+    check(simulatePopulationGrowth(testInput, 80) == 5934L)
+    check(simulatePopulationGrowth(testInput, 256) == 26984457539L)
 
     val input = readInput("day6/input")
-    println(part1(input))
-    println(part2(input))
+    println(simulatePopulationGrowth(input, 80))
+    println(simulatePopulationGrowth(input, 256))
 }
